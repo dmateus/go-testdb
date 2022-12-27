@@ -58,6 +58,7 @@ func LaunchDocker(db Database) error {
 	if err != nil {
 		return fmt.Errorf("could not start resource: %s", err.Error())
 	}
+	_ = resource.Expire(60 * 5) // in seconds
 
 	// exponential backoff-retry, because the application in the container might not be ready to accept connections yet
 	if err := pool.Retry(func() error {
@@ -69,8 +70,6 @@ func LaunchDocker(db Database) error {
 	}); err != nil {
 		return fmt.Errorf("could not connect to database: %s", err.Error())
 	}
-
-	_ = resource.Expire(60 * 5) // in seconds
 
 	db.setResource(resource)
 
