@@ -47,6 +47,7 @@ func LaunchDocker(db Database) error {
 		Repository: db.GetDockerConfigs().Image,
 		Tag:        db.GetDockerConfigs().Tag,
 		Env:        db.GetDockerConfigs().EnvVars,
+		Cmd:        db.GetDockerConfigs().Cmd,
 	}, func(config *docker.HostConfig) {
 		// set AutoRemove to true so that stopped container goes away by itself
 		config.AutoRemove = true
