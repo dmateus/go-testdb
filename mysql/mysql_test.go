@@ -3,7 +3,6 @@ package mysql
 import (
 	"embed"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"testing"
 )
 
@@ -11,12 +10,11 @@ import (
 var migrationsFolder embed.FS
 
 func Test_Launches_MySQL(t *testing.T) {
-	mysql := NewMySQL().
+	db := NewMySQL().
 		WithTag("10.5.8").
-		WithMigrations(migrationsFolder)
-	db, err := mysql.Start()
-	require.NoError(t, err)
-	defer mysql.Stop()
+		WithMigrations(migrationsFolder).
+		WithTest(t).
+		MustStart()
 
 	_, _ = db.Exec(`INSERT INTO users (name) VALUES ('diogo');`)
 

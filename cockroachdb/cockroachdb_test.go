@@ -3,7 +3,6 @@ package cockroachdb
 import (
 	"embed"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"testing"
 )
 
@@ -11,12 +10,11 @@ import (
 var migrationsFolder embed.FS
 
 func Test_Launches_CockroachDB(t *testing.T) {
-	crdb := NewCockroachDB().
+	db := NewCockroachDB().
 		WithTag("v21.2.4").
-		WithMigrations(migrationsFolder)
-	db, err := crdb.Start()
-	require.NoError(t, err)
-	defer crdb.Stop()
+		WithMigrations(migrationsFolder).
+		WithTest(t).
+		MustStart()
 
 	_, _ = db.Exec(`INSERT INTO users (id, name) VALUES (1, 'diogo');`)
 

@@ -11,7 +11,9 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/golang-migrate/migrate/v4/source/httpfs"
 	"io/fs"
+	"log"
 	"net/http"
+	"testing"
 )
 
 type cockroachDB struct {
@@ -38,6 +40,13 @@ func (m *cockroachDB) WithTag(tag string) *cockroachDB {
 
 func (m *cockroachDB) WithMigrations(migrationsFS fs.FS) *cockroachDB {
 	m.migrationsFS = migrationsFS
+	return m
+}
+
+func (m *cockroachDB) WithTest(t *testing.T) *cockroachDB {
+	t.Cleanup(func() {
+		m.Stop()
+	})
 	return m
 }
 
@@ -82,15 +91,18 @@ func (m *cockroachDB) migrateUp() error {
 	return nil
 }
 
-func (m *cockroachDB) Start() (*sql.DB, error) {
+func (m *cockroachDB) MustStart() *sql.DB {
 	err := base.LaunchDocker(m)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	if m.migrationsFS != nil {
 		err = m.migrateUp()
 		if err != nil {
-			return nil, err
+			log.Fatal(err)
 		}
 	}
 
-	return m.db, err
+	return m.db
 }

@@ -3,23 +3,21 @@ package mongo
 import (
 	"context"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"go.mongodb.org/mongo-driver/bson"
 	"testing"
 )
 
 func Test_Launches_Mongo(t *testing.T) {
-	m := NewMongo().
-		WithTag("5.0")
-	client, err := m.Start()
-	require.NoError(t, err)
-	defer m.Stop()
+	client := NewMongo().
+		WithTag("5.0").
+		WithTest(t).
+		MustStart()
 	db := client.Database("my-database")
 	type user struct {
 		FirstName string `bson:"firstName"`
 		LastName  string `bson:"lastName"`
 	}
-	_, err = db.Collection("users").InsertOne(context.Background(), user{
+	_, err := db.Collection("users").InsertOne(context.Background(), user{
 		FirstName: "diogo",
 		LastName:  "mateus",
 	})

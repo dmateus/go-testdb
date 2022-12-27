@@ -6,6 +6,8 @@ import (
 	"github.com/dmateus/go-testdb/base"
 	mongoDriver "go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"log"
+	"testing"
 )
 
 type mongo struct {
@@ -25,6 +27,13 @@ func NewMongo() *mongo {
 // WithTag Sets the image tag. Default: 5.0
 func (m *mongo) WithTag(tag string) *mongo {
 	m.DockerConfigs.Tag = tag
+	return m
+}
+
+func (m *mongo) WithTest(t *testing.T) *mongo {
+	t.Cleanup(func() {
+		m.Stop()
+	})
 	return m
 }
 
@@ -50,7 +59,10 @@ func (m *mongo) Connect(port string) error {
 	return nil
 }
 
-func (m *mongo) Start() (*mongoDriver.Client, error) {
+func (m *mongo) MustStart() *mongoDriver.Client {
 	err := base.LaunchDocker(m)
-	return m.client, err
+	if err != nil {
+		log.Fatal(err)
+	}
+	return m.client
 }

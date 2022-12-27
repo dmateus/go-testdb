@@ -11,7 +11,9 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/golang-migrate/migrate/v4/source/httpfs"
 	"io/fs"
+	"log"
 	"net/http"
+	"testing"
 )
 
 type mysql struct {
@@ -36,6 +38,13 @@ func (m *mysql) WithTag(tag string) *mysql {
 
 func (m *mysql) WithMigrations(migrationsFS fs.FS) *mysql {
 	m.migrationsFS = migrationsFS
+	return m
+}
+
+func (m *mysql) WithTest(t *testing.T) *mysql {
+	t.Cleanup(func() {
+		m.Stop()
+	})
 	return m
 }
 
@@ -80,15 +89,18 @@ func (m *mysql) migrateUp() error {
 	return nil
 }
 
-func (m *mysql) Start() (*sql.DB, error) {
+func (m *mysql) MustStart() *sql.DB {
 	err := base.LaunchDocker(m)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	if m.migrationsFS != nil {
 		err = m.migrateUp()
 		if err != nil {
-			return nil, err
+			log.Fatal(err)
 		}
 	}
 
-	return m.db, err
+	return m.db
 }
