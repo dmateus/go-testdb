@@ -36,9 +36,9 @@ func TestSomething(t *testing.T) {
 For more examples, check the tests in each of the database packages.
 
 ### API
-```go
+```
 Stop()                              -- Stops and removes the docker container.
-WithTag(tag string)                 -- Select the docker version of the database you want to run.
+WithTag(tag string)                 -- Select the docker tag you want to run.
 WithMigrations(migrationsFS fs.FS)  -- Runs the migration files in the given folder. Available in SQL databases.
 WithTest(t *testing.T)              -- Instead of handling the database termination with `Stop()`, you can rely on `WithTest` to close it in the end. It also works with testify's Suites.
 MustStart()                         -- Starts the docker container.
