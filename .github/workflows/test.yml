@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - id: set-dirs
-        # List all repons that contain a go.mod file.
+        # List all reps that contain a go.mod file.
         run: echo "::set-output name=dir::$(find . -name 'go.mod' -printf '%P\n' | xargs dirname | jq -R -s -c 'split("\n")[0:-1]')"
         # Define step output named dir base on ls command transformed to JSON thanks to jq
 
