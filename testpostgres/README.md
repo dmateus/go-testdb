@@ -4,7 +4,7 @@ This library is a testing tool that runs postgres through docker.
 
 ### Installation
 ```shell
-go get github.com/dmateus/go-testdb/testcrdb
+go get github.com/dmateus/go-testdb/testpostgres
 ```
 
 ### Usage
@@ -12,7 +12,7 @@ go get github.com/dmateus/go-testdb/testcrdb
 import (
     "embed"
     "testing"
-    "github.com/dmateus/go-testdb/testcrdb"
+    "github.com/dmateus/go-testdb/testpostgres"
 )
 
 //go:embed migrations
