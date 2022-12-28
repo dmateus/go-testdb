@@ -1,6 +1,9 @@
 package base
 
-import "github.com/ory/dockertest/v3"
+import (
+	"github.com/ory/dockertest/v3"
+	"log"
+)
 
 type Base struct {
 	resource      *dockertest.Resource
@@ -22,6 +25,6 @@ func (b *Base) GetDockerConfigs() *DockerConfigs {
 func (b *Base) Stop() {
 	err := StopDocker(b)
 	if err != nil {
-		// todo: log
+		log.Fatal(err)
 	}
 }

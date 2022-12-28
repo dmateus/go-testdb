@@ -6,6 +6,7 @@ import (
 	"github.com/ory/dockertest/v3/docker"
 	"log"
 	"sync"
+	"time"
 )
 
 var (
@@ -40,6 +41,7 @@ func GetPool() *dockertest.Pool {
 
 func LaunchDocker(db Database) error {
 	pool := GetPool()
+	pool.MaxWait = 120 * time.Second
 
 	// pulls an image, creates a container based on it and runs it
 	resource, err := pool.RunWithOptions(&dockertest.RunOptions{

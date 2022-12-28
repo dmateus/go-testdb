@@ -3,11 +3,24 @@
 
 This library is a testing tool that runs various databases through docker.
 
+### Databases
+- [PostgreSQL](testpostgres)
+- [MySQL](testmysql)
+- [CockroachDB](testcrdb)
+- [Mongo](testmongo)
+
+### Why use this library
+- Launching test databases with code simplifies the process of running tests.
+- Docker is the only dependency.
+- Make use a useful utils like: run migrations, disconnect database automatically and reset database.
+- If the test crashes, the database container will still be stopped and removed.
+
 ### Installation
 ```shell
-go get github.com/dmateus/go-testdb/testmongo
 go get github.com/dmateus/go-testdb/testcrdb
 go get github.com/dmateus/go-testdb/testmysql
+go get github.com/dmateus/go-testdb/testpostgres
+go get github.com/dmateus/go-testdb/testmongo
 ```
 
 ### CockroachDB Usage
@@ -23,7 +36,6 @@ var migrationsFolder embed.FS
 
 func TestSomething(t *testing.T) {
     db := testcrdb.NewCockroachDB().
-        WithTag("v21.2.4").
         WithMigrations(migrationsFolder).
         WithTest(t).
         MustStart().
