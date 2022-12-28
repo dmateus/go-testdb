@@ -1,4 +1,4 @@
-## Postgres
+## MySQL
 
 This library is a testing tool that runs postgres through docker.
 
