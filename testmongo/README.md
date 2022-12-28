@@ -1,4 +1,4 @@
-## Postgres
+## Mongo
 
 This library is a testing tool that runs postgres through docker.
 
@@ -19,7 +19,7 @@ import (
 var migrationsFolder embed.FS
 
 func TestSomething(t *testing.T) {
-    db := testmongo.NewCockroachDB().
+    db := testmongo.NewMongo().
         WithTest(t).
         MustStart().
         GetDB()
