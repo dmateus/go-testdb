@@ -4,7 +4,6 @@
 This library is a testing tool that runs various databases through docker.
 
 ### Installation
-Only install the required database
 ```shell
 go get github.com/dmateus/go-testdb/testmongo
 go get github.com/dmateus/go-testdb/testcrdb
