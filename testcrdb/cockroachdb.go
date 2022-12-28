@@ -1,4 +1,4 @@
-package cockroachdb
+package testcrdb
 
 import (
 	"database/sql"
@@ -16,14 +16,16 @@ import (
 	"testing"
 )
 
-type cockroachDB struct {
+const dbName = "defaultdb"
+
+type CockroachDB struct {
 	base.Base
 	db           *sql.DB
 	migrationsFS fs.FS
 }
 
-func NewCockroachDB() *cockroachDB {
-	m := cockroachDB{}
+func NewCockroachDB() *CockroachDB {
+	m := CockroachDB{}
 	m.DockerConfigs = &base.DockerConfigs{
 		Image: "cockroachdb/cockroach",
 		Tag:   "v21.2.4",
@@ -33,34 +35,34 @@ func NewCockroachDB() *cockroachDB {
 }
 
 // WithTag Sets the image tag. Default: v21.2.4
-func (m *cockroachDB) WithTag(tag string) *cockroachDB {
+func (m *CockroachDB) WithTag(tag string) *CockroachDB {
 	m.DockerConfigs.Tag = tag
 	return m
 }
 
-func (m *cockroachDB) WithMigrations(migrationsFS fs.FS) *cockroachDB {
+func (m *CockroachDB) WithMigrations(migrationsFS fs.FS) *CockroachDB {
 	m.migrationsFS = migrationsFS
 	return m
 }
 
-func (m *cockroachDB) WithTest(t *testing.T) *cockroachDB {
+func (m *CockroachDB) WithTest(t *testing.T) *CockroachDB {
 	t.Cleanup(func() {
 		m.Stop()
 	})
 	return m
 }
 
-func (m *cockroachDB) Ping() error {
+func (m *CockroachDB) Ping() error {
 	err := m.db.Ping()
 	return err
 }
 
-func (m *cockroachDB) GetPort() string {
+func (m *CockroachDB) GetPort() string {
 	return "26257"
 }
 
-func (m *cockroachDB) Connect(port string) error {
-	db, err := sql.Open("postgres", fmt.Sprintf("postgresql://root@localhost:%s/defaultdb?sslmode=disable", port))
+func (m *CockroachDB) Connect(port string) error {
+	db, err := sql.Open("postgres", fmt.Sprintf("postgresql://root@localhost:%s/%s?sslmode=disable", port, dbName))
 	if err != nil {
 		return err
 	}
@@ -69,7 +71,7 @@ func (m *cockroachDB) Connect(port string) error {
 	return nil
 }
 
-func (m *cockroachDB) migrateUp() error {
+func (m *CockroachDB) migrateUp() error {
 	source, err := httpfs.New(http.FS(m.migrationsFS), "migrations")
 	if err != nil {
 		return err
@@ -91,7 +93,7 @@ func (m *cockroachDB) migrateUp() error {
 	return nil
 }
 
-func (m *cockroachDB) MustStart() *sql.DB {
+func (m *CockroachDB) MustStart() *CockroachDB {
 	err := base.LaunchDocker(m)
 	if err != nil {
 		log.Fatal(err)
@@ -104,5 +106,13 @@ func (m *cockroachDB) MustStart() *sql.DB {
 		}
 	}
 
+	return m
+}
+
+func (m *CockroachDB) GetDB() *sql.DB {
 	return m.db
+}
+
+func (m *CockroachDB) ResetDB() error {
+	return base.ResetSQL(m.db, dbName)
 }

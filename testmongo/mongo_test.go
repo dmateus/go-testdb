@@ -1,4 +1,4 @@
-package mongo
+package testmongo
 
 import (
 	"context"
@@ -8,11 +8,10 @@ import (
 )
 
 func Test_Launches_Mongo(t *testing.T) {
-	client := NewMongo().
-		WithTag("5.0").
+	db := NewMongo().
 		WithTest(t).
-		MustStart()
-	db := client.Database("my-database")
+		MustStart().
+		GetDB()
 	type user struct {
 		FirstName string `bson:"firstName"`
 		LastName  string `bson:"lastName"`

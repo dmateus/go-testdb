@@ -1,4 +1,4 @@
-package mysql
+package testmysql
 
 import (
 	"database/sql"
@@ -16,49 +16,55 @@ import (
 	"testing"
 )
 
-type mysql struct {
+const dbName = "defaultdb"
+
+type MySQL struct {
 	base.Base
 	db           *sql.DB
 	migrationsFS fs.FS
 }
 
-func NewMySQL() *mysql {
-	m := mysql{}
-	m.DockerConfigs = base.NewDockerConfigs("mysql", "5.7", []string{
-		"MYSQL_ROOT_PASSWORD=secret",
-	})
+func NewMySQL() *MySQL {
+	m := MySQL{}
+	m.DockerConfigs = &base.DockerConfigs{
+		Image: "mysql",
+		Tag:   "5.7",
+		EnvVars: []string{
+			"MYSQL_ROOT_PASSWORD=secret",
+		},
+	}
 	return &m
 }
 
 // WithTag Sets the image tag. Default: 5.7
-func (m *mysql) WithTag(tag string) *mysql {
+func (m *MySQL) WithTag(tag string) *MySQL {
 	m.DockerConfigs.Tag = tag
 	return m
 }
 
-func (m *mysql) WithMigrations(migrationsFS fs.FS) *mysql {
+func (m *MySQL) WithMigrations(migrationsFS fs.FS) *MySQL {
 	m.migrationsFS = migrationsFS
 	return m
 }
 
-func (m *mysql) WithTest(t *testing.T) *mysql {
+func (m *MySQL) WithTest(t *testing.T) *MySQL {
 	t.Cleanup(func() {
 		m.Stop()
 	})
 	return m
 }
 
-func (m *mysql) Ping() error {
+func (m *MySQL) Ping() error {
 	err := m.db.Ping()
 	return err
 }
 
-func (m *mysql) GetPort() string {
+func (m *MySQL) GetPort() string {
 	return "3306"
 }
 
-func (m *mysql) Connect(port string) error {
-	db, err := sql.Open("mysql", fmt.Sprintf("root:secret@(localhost:%s)/mysql", port))
+func (m *MySQL) Connect(port string) error {
+	db, err := sql.Open("mysql", fmt.Sprintf("root:secret@(localhost:%s)/%s", port, dbName))
 	if err != nil {
 		return err
 	}
@@ -67,7 +73,7 @@ func (m *mysql) Connect(port string) error {
 	return nil
 }
 
-func (m *mysql) migrateUp() error {
+func (m *MySQL) migrateUp() error {
 	source, err := httpfs.New(http.FS(m.migrationsFS), "migrations")
 	if err != nil {
 		return err
@@ -89,7 +95,7 @@ func (m *mysql) migrateUp() error {
 	return nil
 }
 
-func (m *mysql) MustStart() *sql.DB {
+func (m *MySQL) MustStart() *MySQL {
 	err := base.LaunchDocker(m)
 	if err != nil {
 		log.Fatal(err)
@@ -102,5 +108,13 @@ func (m *mysql) MustStart() *sql.DB {
 		}
 	}
 
+	return m
+}
+
+func (m *MySQL) GetDB() *sql.DB {
 	return m.db
+}
+
+func (m *MySQL) ResetDB() error {
+	return base.ResetSQL(m.db, dbName)
 }

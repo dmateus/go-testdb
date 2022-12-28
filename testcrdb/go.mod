@@ -3,7 +3,7 @@ module github.com/dmateus/go-testdb/cockroachdb
 go 1.19
 
 require (
-	github.com/dmateus/go-testdb/base v0.0.0-20221227183045-070201f92172
+	github.com/dmateus/go-testdb/base v0.0.0-20221228195115-2ef4584013bc
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/stretchr/testify v1.8.1

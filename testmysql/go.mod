@@ -3,7 +3,7 @@ module github.com/dmateus/go-testdb/mysql
 go 1.19
 
 require (
-	github.com/dmateus/go-testdb/base v0.0.0-20221227133243-a24de78476c6
+	github.com/dmateus/go-testdb/base v0.0.0-20221228195115-2ef4584013bc
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/stretchr/testify v1.7.1

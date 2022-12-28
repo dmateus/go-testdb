@@ -1,4 +1,4 @@
-package cockroachdb
+package testcrdb
 
 import (
 	"embed"
@@ -14,7 +14,8 @@ func Test_Launches_CockroachDB(t *testing.T) {
 		WithTag("v21.2.4").
 		WithMigrations(migrationsFolder).
 		WithTest(t).
-		MustStart()
+		MustStart().
+		GetDB()
 
 	_, _ = db.Exec(`INSERT INTO users (id, name) VALUES (1, 'diogo');`)
 
