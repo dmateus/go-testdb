@@ -14,7 +14,8 @@ func Test_Launches_MySQL(t *testing.T) {
 		WithTag("10.5.8").
 		WithMigrations(migrationsFolder).
 		WithTest(t).
-		MustStart()
+		MustStart().
+		GetDB()
 
 	_, _ = db.Exec(`INSERT INTO users (name) VALUES ('diogo');`)
 

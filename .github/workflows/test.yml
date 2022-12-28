@@ -17,6 +17,7 @@ jobs:
   test-modules:
     runs-on: ubuntu-latest
     needs: [list-modules]
+    continue-on-error: true
     strategy:
       matrix:
         dir: ${{fromJson(needs.list-modules.outputs.dir)}}
