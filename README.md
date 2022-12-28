@@ -11,7 +11,6 @@ This library is a testing tool that runs various databases through docker.
 
 ### Why use this library
 - Launching test databases with code simplifies the process of running tests.
-- Docker is the only dependency.
 - Make use a useful utils like: run migrations, disconnect database automatically and reset database.
 - If the test crashes, the database container will still be stopped and removed.
 
