@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func ResetSqlDB(db *sql.DB, databaseName string) error {
+func ResetSQL(db *sql.DB, databaseName string) error {
 	rows, err := db.Query(fmt.Sprintf(`SELECT 'TRUNCATE ' || input_table_name || ' CASCADE;' AS truncate_query FROM(SELECT table_schema || '.' || table_name AS input_table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_catalog = '%s');`, databaseName))
 	if err != nil {
 		return err
