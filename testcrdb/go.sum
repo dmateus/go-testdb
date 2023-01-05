@@ -356,12 +356,6 @@ github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZm
 github.com/dgryski/go-sip13 v0.0.0-20181026042036-e10d5fee7954/go.mod h1:vAd38F8PWV+bWy6jNmig1y/TA+kYO4g3RSRF0IAv0no=
 github.com/dhui/dktest v0.3.10 h1:0frpeeoM9pHouHjhLeZDuDTJ0PqjDTrycaHaMmkJAo8=
 github.com/dhui/dktest v0.3.10/go.mod h1:h5Enh0nG3Qbo9WjNFRrwmKUaePEBhXMOygbz3Ww7Sz0=
-github.com/dmateus/go-testdb/base v0.0.0-20221227180142-c39806be4e85 h1:S5ZQ69GR4a5TMKPrIbAftS1QQbXE8C2UyqDgSTVPJNw=
-github.com/dmateus/go-testdb/base v0.0.0-20221227180142-c39806be4e85/go.mod h1:PbQR4sv9vhj8iktrIU7rfqhWRXGovbXaCa/vtct6ZIg=
-github.com/dmateus/go-testdb/base v0.0.0-20221227183045-070201f92172 h1:b2FwSOHLcknIbsyFkuhqLld9WpqDEzmxmbVrXoxs430=
-github.com/dmateus/go-testdb/base v0.0.0-20221227183045-070201f92172/go.mod h1:PbQR4sv9vhj8iktrIU7rfqhWRXGovbXaCa/vtct6ZIg=
-github.com/dmateus/go-testdb/base v0.0.0-20221227194728-0c9b5486df0e h1:SR/wLsgTQesMACnqYBcQoS7AMMnCgT6Ero2ZOAqBthc=
-github.com/dmateus/go-testdb/base v0.0.0-20221227194728-0c9b5486df0e/go.mod h1:LJTKykuEiC7598+NRlC9ycAZEILbC/QHSJVadNfTMB4=
 github.com/dmateus/go-testdb/base v0.0.0-20221228195115-2ef4584013bc h1:xTDUcYH0UXPlVugWy9bvaoDokzGQYs2CTxPC5IOOI8U=
 github.com/dmateus/go-testdb/base v0.0.0-20221228195115-2ef4584013bc/go.mod h1:LJTKykuEiC7598+NRlC9ycAZEILbC/QHSJVadNfTMB4=
 github.com/dnaeon/go-vcr v1.0.1/go.mod h1:aBB1+wY4s93YsC3HHjMBMrwTj2R9FHDzUr9KyGc8n1E=

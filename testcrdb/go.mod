@@ -1,4 +1,4 @@
-module github.com/dmateus/go-testdb/cockroachdb
+module github.com/dmateus/go-testdb/testcrdb
 
 go 1.19
 
